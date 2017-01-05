@@ -3,6 +3,14 @@ var router = express.Router();
 var Todos = require('../schema/todos.js');
 var mongojs = require('mongojs');
 
+
+router.all('/', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+ });
+
+
 router.get('/todos', function (req, res, next) {
     Todos.find({}, function (err, todos) {
         if (err) {
@@ -41,7 +49,7 @@ router.get('/todo/:id', function (req, res, next) {
 
 /* POST/SAVE a Todo */
 router.post('/todo', function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
+    
     var todo = new Todos(req.body);
 
         todo.save(todo, function (err, result) {
